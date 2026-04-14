@@ -1,11 +1,10 @@
-#Write a program to find whether a given username contains less than 10
-#characters or not.
-
-name = input("enter your name: ")
-
-if(len(name) <10 ):
-    print("Your name characters are less than 10")
-elif(len(name) ==10):
-    print("Your name characters are exactly 10")
-else:
-    print("Yopur name characters are more than 10")
+#Write a program to find whether a given number is prime or not.
+num = int(input("Enter a number: "))
+if num > 1:
+    for i in range(2, num):
+        if (num % i) == 0:
+            print(num, "is not a prime number")
+            break
+    else:
+        print(num, "is a prime number")
+else:    print(num, "is not a prime number")
