@@ -1,0 +1,2 @@
+APP_NAME = "AI Task Manager"
+MAX_PRIORITY = 5
