@@ -1,3 +1,8 @@
-from voice_engine import speak
+from voice_engine import speak, listen
 
-speak("Hello, I am your assistant")
+speak("Assistant ready")
+
+while True:
+    command = listen()
+    if command:
+        print(command)
