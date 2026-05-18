@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOP Mastery Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #7c6af7;
+    --accent2: #f7a66a;
+    --accent3: #6af7c8;
+    --accent4: #f76a8a;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --code-bg: #0d0d14;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 260px; background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto; z-index: 100;
+    padding: 24px 0;
+  }
+  .sidebar-logo {
+    padding: 0 24px 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 900;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo span { color: var(--accent2); }
+  .nav-section { padding: 8px 24px 4px; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .nav-item {
+    display: block; padding: 8px 24px;
+    color: var(--muted); text-decoration: none;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover, .nav-item.active {
+    color: var(--text); background: rgba(124,106,247,0.08);
+    border-left-color: var(--accent);
+  }
+  .nav-item .num {
+    display: inline-block; width: 20px; height: 20px;
+    background: var(--border); border-radius: 50%;
+    font-size: 10px; text-align: center; line-height: 20px;
+    margin-right: 8px; font-family: 'JetBrains Mono', monospace;
+  }
+  .nav-item.active .num { background: var(--accent); color: white; }
+
+  /* MAIN */
+  .main { margin-left: 260px; padding: 0 48px 80px; max-width: 900px; }
+
+  /* HERO */
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+  .hero-tag {
+    display: inline-block; padding: 4px 12px;
+    background: rgba(124,106,247,0.15); border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 20px; font-size: 11px; letter-spacing: 2px;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px; font-weight: 900; line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 560px; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 72px; }
+  .section-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #5b4de0);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 600; color: white;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700;
+  }
+  .section-subtitle { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+  /* CARDS */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; margin-bottom: 20px;
+  }
+  .card-title {
+    font-weight: 600; font-size: 16px; margin-bottom: 10px;
+    color: var(--accent2); font-family: 'DM Sans', sans-serif;
+  }
+  .card p { color: var(--muted); margin-bottom: 8px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* CONCEPT PILLS */
+  .pillars {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px; margin-bottom: 32px;
+  }
+  .pillar {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+    border-top: 3px solid var(--accent);
+    transition: transform 0.2s;
+  }
+  .pillar:hover { transform: translateY(-2px); }
+  .pillar:nth-child(2) { border-top-color: var(--accent2); }
+  .pillar:nth-child(3) { border-top-color: var(--accent3); }
+  .pillar:nth-child(4) { border-top-color: var(--accent4); }
+  .pillar-icon { font-size: 28px; margin-bottom: 10px; }
+  .pillar-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .pillar-desc { color: var(--muted); font-size: 13px; }
+
+  /* CODE BLOCKS */
+  .code-block {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; margin: 16px 0;
+  }
+  .code-header {
+    background: var(--surface); padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--accent); letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #f76a8a; }
+  .dot-y { background: var(--accent2); }
+  .dot-g { background: var(--accent3); }
+  pre {
+    padding: 20px; overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; line-height: 1.8; color: #c8c8e0;
+  }
+  .k { color: #7c6af7; } /* keywords */
+  .cn { color: #f7a66a; } /* class names */
+  .fn { color: #6af7c8; } /* function names */
+  .s { color: #f76a8a; } /* strings */
+  .c { color: #555570; font-style: italic; } /* comments */
+  .n { color: #e8e8f0; } /* normal */
+  .num { color: #a8e6cf; } /* numbers */
+
+  /* DEFINITION BOXES */
+  .def-box {
+    border-left: 3px solid var(--accent);
+    background: rgba(124,106,247,0.06);
+    padding: 16px 20px; border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .def-box.orange { border-left-color: var(--accent2); background: rgba(247,166,106,0.06); }
+  .def-box.green { border-left-color: var(--accent3); background: rgba(106,247,200,0.06); }
+  .def-box.red { border-left-color: var(--accent4); background: rgba(247,106,138,0.06); }
+  .def-label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 6px;
+  }
+  .def-box.orange .def-label { color: var(--accent2); }
+  .def-box.green .def-label { color: var(--accent3); }
+  .def-box.red .def-label { color: var(--accent4); }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th {
+    background: var(--surface); padding: 10px 14px;
+    text-align: left; font-size: 12px; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px; border-bottom: 1px solid rgba(42,42,58,0.5);
+    font-size: 13px; vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-family: 'JetBrains Mono', monospace; color: var(--accent2); }
+
+  /* COMPARISON */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .compare-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .compare-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-box.good .compare-label { color: var(--accent3); }
+  .compare-box.bad .compare-label { color: var(--accent4); }
+
+  /* DIAGRAM */
+  .diagram {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; line-height: 2; color: var(--muted);
+    margin: 16px 0; white-space: pre;
+  }
+  .diagram .box { color: var(--accent2); }
+  .diagram .arrow { color: var(--accent); }
+  .diagram .label { color: var(--accent3); }
+
+  /* PROGRESS INDICATOR */
+  .progress-bar {
+    position: fixed; top: 0; left: 260px; right: 0;
+    height: 2px; background: var(--border); z-index: 200;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0%; transition: width 0.1s;
+  }
+
+  /* HIGHLIGHT */
+  .highlight { color: var(--accent); font-weight: 600; }
+  .highlight2 { color: var(--accent2); font-weight: 600; }
+  .highlight3 { color: var(--accent3); font-weight: 600; }
+
+  h3 { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 17px; margin: 24px 0 10px; color: var(--text); }
+  h4 { font-weight: 600; font-size: 14px; margin: 16px 0 8px; color: var(--accent3); }
+  p { margin-bottom: 12px; color: var(--muted); }
+  ul { padding-left: 20px; color: var(--muted); margin-bottom: 12px; }
+  li { margin-bottom: 6px; }
+  strong { color: var(--text); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 20px; }
+    .progress-bar { left: 0; }
+    .pillars { grid-template-columns: 1fr; }
+    .compare { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">OOP<span>.</span>guide</div>
+  <div class="nav-section">Foundations</div>
+  <a class="nav-item" href="#intro"><span class="num">0</span>What is OOP?</a>
+  <a class="nav-item" href="#class-object"><span class="num">1</span>Classes & Objects</a>
+  <a class="nav-item" href="#attributes"><span class="num">2</span>Attributes & Methods</a>
+  <a class="nav-item" href="#constructor"><span class="num">3</span>Constructors</a>
+  <div class="nav-section">Four Pillars</div>
+  <a class="nav-item" href="#encapsulation"><span class="num">4</span>Encapsulation</a>
+  <a class="nav-item" href="#inheritance"><span class="num">5</span>Inheritance</a>
+  <a class="nav-item" href="#polymorphism"><span class="num">6</span>Polymorphism</a>
+  <a class="nav-item" href="#abstraction"><span class="num">7</span>Abstraction</a>
+  <div class="nav-section">Advanced</div>
+  <a class="nav-item" href="#interfaces"><span class="num">8</span>Interfaces</a>
+  <a class="nav-item" href="#composition"><span class="num">9</span>Composition vs Inheritance</a>
+  <a class="nav-item" href="#solid"><span class="num">10</span>SOLID Principles</a>
+  <a class="nav-item" href="#design-patterns"><span class="num">11</span>Design Patterns</a>
+  <a class="nav-item" href="#advanced-oop"><span class="num">12</span>Advanced Concepts</a>
+  <a class="nav-item" href="#summary"><span class="num">★</span>Full Summary</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Complete Course</div>
+    <h1>Object-Oriented<br><span>Programming</span></h1>
+    <p>From first principles to advanced design patterns — everything you need to truly master OOP. Written in Python with cross-language insights.</p>
+  </div>
+
+  <!-- 0. INTRO -->
+  <section class="section" id="intro">
+    <div class="section-header">
+      <div class="section-num">00</div>
+      <div>
+        <div class="section-title">What is OOP?</div>
+        <div class="section-subtitle">The paradigm, the philosophy, the why</div>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Definition</div>
+      <strong>Object-Oriented Programming (OOP)</strong> is a programming paradigm that organizes software design around <em>objects</em> — bundling data (attributes) and behavior (methods) together — rather than around functions and logic alone.
+    </div>
+
+    <h3>Programming Paradigms at a Glance</h3>
+    <table>
+      <tr><th>Paradigm</th><th>Core Idea</th><th>Example</th></tr>
+      <tr><td>Procedural</td><td>Step-by-step instructions, functions</td><td>C, Pascal</td></tr>
+      <tr><td>Functional</td><td>Pure functions, immutable data</td><td>Haskell, Erlang</td></tr>
+      <tr><td>OOP</td><td>Objects with state and behavior</td><td>Java, Python, C++</td></tr>
+      <tr><td>Declarative</td><td>Describe what, not how</td><td>SQL, HTML</td></tr>
+    </table>
+
+    <h3>Why OOP Exists</h3>
+    <p>As programs grew larger in the 1970s–80s, procedural code became an unmanageable tangle of global variables and functions. OOP was born to solve:</p>
+    <ul>
+      <li><strong>Complexity</strong> — model the real world as objects</li>
+      <li><strong>Reusability</strong> — write once, use everywhere via inheritance</li>
+      <li><strong>Maintainability</strong> — changes inside a class don't break outside code</li>
+      <li><strong>Collaboration</strong> — teams can work on different classes independently</li>
+    </ul>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">🔒</div>
+        <div class="pillar-name">Encapsulation</div>
+        <div class="pillar-desc">Bundle data and hide its internal details</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🧬</div>
+        <div class="pillar-name">Inheritance</div>
+        <div class="pillar-desc">Child classes reuse and extend parent behavior</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎭</div>
+        <div class="pillar-name">Polymorphism</div>
+        <div class="pillar-desc">Same interface, different implementations</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎯</div>
+        <div class="pillar-name">Abstraction</div>
+        <div class="pillar-desc">Expose only what's necessary, hide complexity</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. CLASS & OBJECT -->
+  <section class="section" id="class-object">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">Classes & Objects</div>
+        <div class="section-subtitle">The blueprint and the thing itself</div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-box good">
+        <div class="compare-label">🏠 Class = Blueprint</div>
+        <p style="font-size:13px;">A template/definition. Describes what data and behaviors instances will have. <strong>No memory allocated.</strong></p>
+      </div>
+      <div class="compare-box bad">
+        <div class="compare-label">🏡 Object = Instance</div>
+        <p style="font-size:13px;">A real, living thing created from the class. <strong>Occupies memory.</strong> You can have millions of objects from one class.</p>
+      </div>
+    </div>
+
+    <div class="def-box orange">
+      <div class="def-label">Analogy</div>
+      A <strong>class</strong> is like an architectural blueprint for a house. An <strong>object</strong> is an actual house built from that blueprint. Many houses can be built from the same blueprint, each with different paint colors and furniture.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">Python</div>
+      </div>
+      <pre><span class="c"># CLASS DEFINITION (blueprint)</span>
+<span class="k">class</span> <span class="cn">Dog</span>:
+    <span class="c"># Class body goes here</span>
+    <span class="k">pass</span>
+
+<span class="c"># OBJECT CREATION (instantiation)</span>
+<span class="n">my_dog</span> = <span class="cn">Dog</span>()       <span class="c"># my_dog is now an OBJECT (instance of Dog)</span>
+<span class="n">your_dog</span> = <span class="cn">Dog</span>()     <span class="c"># another separate object</span>
+
+<span class="c"># They are different objects!</span>
+<span class="fn">print</span>(<span class="n">my_dog</span> <span class="k">is</span> <span class="n">your_dog</span>)  <span class="c"># False — different instances</span>
+
+<span class="c"># Check type</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="n">my_dog</span>))          <span class="c"># &lt;class '__main__.Dog'&gt;</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(<span class="n">my_dog</span>, <span class="cn">Dog</span>))  <span class="c"># True</span></pre>
+    </div>
+
+    <h3>Everything in Python is an Object</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python</div></div>
+      <pre><span class="c"># Even basic types are objects in Python!</span>
+<span class="n">x</span> = <span class="num">42</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="n">x</span>))        <span class="c"># &lt;class 'int'&gt;</span>
+<span class="fn">print</span>(<span class="n">x</span>.<span class="fn">bit_length</span>()) <span class="c"># 6  — calling a method on int!</span>
+
+<span class="n">name</span> = <span class="s">"Alice"</span>
+<span class="fn">print</span>(<span class="n">name</span>.<span class="fn">upper</span>())    <span class="c"># ALICE — str is a class too</span></pre>
+    </div>
+  </section>
+
+  <!-- 2. ATTRIBUTES & METHODS -->
+  <section class="section" id="attributes">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Attributes & Methods</div>
+        <div class="section-subtitle">State and behavior</div>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Term</th><th>What It Is</th><th>Analogy</th></tr>
+      <tr><td>Attribute / Field</td><td>Variable stored inside an object (state/data)</td><td>Dog's name, breed, age</td></tr>
+      <tr><td>Method</td><td>Function defined inside a class (behavior)</td><td>Dog's bark(), fetch(), eat()</td></tr>
+      <tr><td>self</td><td>Reference to the current instance (Python)</td><td>"me" — this specific dog</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python</div></div>
+      <pre><span class="k">class</span> <span class="cn">Dog</span>:
+    <span class="c"># ── CLASS ATTRIBUTE ── shared by ALL instances</span>
+    <span class="n">species</span> = <span class="s">"Canis lupus familiaris"</span>
+
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">name</span>, <span class="n">breed</span>, <span class="n">age</span>):
+        <span class="c"># ── INSTANCE ATTRIBUTES ── unique per object</span>
+        <span class="n">self</span>.<span class="n">name</span> = <span class="n">name</span>
+        <span class="n">self</span>.<span class="n">breed</span> = <span class="n">breed</span>
+        <span class="n">self</span>.<span class="n">age</span> = <span class="n">age</span>
+        <span class="n">self</span>.<span class="n">is_hungry</span> = <span class="k">True</span>
+
+    <span class="c"># ── INSTANCE METHODS ── operate on self</span>
+    <span class="k">def</span> <span class="fn">bark</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.name} says: Woof!"</span>
+
+    <span class="k">def</span> <span class="fn">eat</span>(<span class="n">self</span>, <span class="n">food</span>):
+        <span class="n">self</span>.<span class="n">is_hungry</span> = <span class="k">False</span>
+        <span class="k">return</span> <span class="s">f"{self.name} eats {food} 🍖"</span>
+
+    <span class="c"># ── CLASS METHOD ── operates on the class itself</span>
+    <span class="n">@classmethod</span>
+    <span class="k">def</span> <span class="fn">get_species</span>(<span class="n">cls</span>):
+        <span class="k">return</span> <span class="n">cls</span>.<span class="n">species</span>
+
+    <span class="c"># ── STATIC METHOD ── no self or cls needed</span>
+    <span class="n">@staticmethod</span>
+    <span class="k">def</span> <span class="fn">is_dog_friendly</span>(<span class="n">breed</span>):
+        <span class="n">friendly</span> = [<span class="s">"Golden Retriever"</span>, <span class="s">"Labrador"</span>]
+        <span class="k">return</span> <span class="n">breed</span> <span class="k">in</span> <span class="n">friendly</span>
+
+<span class="c"># ── Using the class ──</span>
+<span class="n">rex</span> = <span class="cn">Dog</span>(<span class="s">"Rex"</span>, <span class="s">"German Shepherd"</span>, <span class="num">3</span>)
+<span class="fn">print</span>(<span class="n">rex</span>.<span class="fn">bark</span>())          <span class="c"># Rex says: Woof!</span>
+<span class="fn">print</span>(<span class="n">rex</span>.<span class="fn">eat</span>(<span class="s">"bone"</span>))     <span class="c"># Rex eats bone 🍖</span>
+<span class="fn">print</span>(<span class="cn">Dog</span>.<span class="fn">get_species</span>())   <span class="c"># Canis lupus familiaris</span>
+<span class="fn">print</span>(<span class="cn">Dog</span>.<span class="fn">is_dog_friendly</span>(<span class="s">"Labrador"</span>))  <span class="c"># True</span></pre>
+    </div>
+
+    <div class="def-box green">
+      <div class="def-label">Key Rule</div>
+      Every <strong>instance method</strong> must have <code>self</code> as its first parameter — Python passes the instance automatically when you call <code>rex.bark()</code>.
+    </div>
+  </section>
+
+  <!-- 3. CONSTRUCTORS -->
+  <section class="section" id="constructor">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Constructors & Magic Methods</div>
+        <div class="section-subtitle">Object lifecycle and special behaviors</div>
+      </div>
+    </div>
+
+    <p>A <strong>constructor</strong> is a special method called automatically when an object is created. In Python it's <code>__init__</code>. In Java/C++ it's a method with the same name as the class.</p>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Magic / Dunder Methods</div></div>
+      <pre><span class="k">class</span> <span class="cn">BankAccount</span>:
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">owner</span>, <span class="n">balance</span>=<span class="num">0</span>):
+        <span class="c">"""Constructor — runs on object creation"""</span>
+        <span class="n">self</span>.<span class="n">owner</span> = <span class="n">owner</span>
+        <span class="n">self</span>.<span class="n">balance</span> = <span class="n">balance</span>
+
+    <span class="k">def</span> <span class="fn">__str__</span>(<span class="n">self</span>):
+        <span class="c">"""Called by print() or str()"""</span>
+        <span class="k">return</span> <span class="s">f"Account({self.owner}: ${self.balance})"</span>
+
+    <span class="k">def</span> <span class="fn">__repr__</span>(<span class="n">self</span>):
+        <span class="c">"""Official string representation (for developers)"""</span>
+        <span class="k">return</span> <span class="s">f"BankAccount('{self.owner}', {self.balance})"</span>
+
+    <span class="k">def</span> <span class="fn">__eq__</span>(<span class="n">self</span>, <span class="n">other</span>):
+        <span class="c">"""Define == behavior"""</span>
+        <span class="k">return</span> <span class="n">self</span>.<span class="n">owner</span> == <span class="n">other</span>.<span class="n">owner</span>
+
+    <span class="k">def</span> <span class="fn">__add__</span>(<span class="n">self</span>, <span class="n">amount</span>):
+        <span class="c">"""Define + operator: account + 100"""</span>
+        <span class="k">return</span> <span class="cn">BankAccount</span>(<span class="n">self</span>.<span class="n">owner</span>, <span class="n">self</span>.<span class="n">balance</span> + <span class="n">amount</span>)
+
+    <span class="k">def</span> <span class="fn">__len__</span>(<span class="n">self</span>):
+        <span class="c">"""len(account) returns balance"""</span>
+        <span class="k">return</span> <span class="n">self</span>.<span class="n">balance</span>
+
+    <span class="k">def</span> <span class="fn">__del__</span>(<span class="n">self</span>):
+        <span class="c">"""Destructor — called when object is garbage collected"""</span>
+        <span class="fn">print</span>(<span class="s">f"Account {self.owner} closed"</span>)
+
+<span class="n">acc</span> = <span class="cn">BankAccount</span>(<span class="s">"Alice"</span>, <span class="num">500</span>)
+<span class="fn">print</span>(<span class="n">acc</span>)            <span class="c"># Account(Alice: $500)</span>
+<span class="n">acc2</span> = <span class="n">acc</span> + <span class="num">200</span>      <span class="c"># uses __add__</span>
+<span class="fn">print</span>(<span class="fn">len</span>(<span class="n">acc2</span>))      <span class="c"># 700</span></pre>
+    </div>
+
+    <h3>Common Dunder (Magic) Methods</h3>
+    <table>
+      <tr><th>Method</th><th>Triggered By</th></tr>
+      <tr><td>__init__</td><td>Object creation: Dog()</td></tr>
+      <tr><td>__str__</td><td>print(obj), str(obj)</td></tr>
+      <tr><td>__repr__</td><td>repr(obj), REPL display</td></tr>
+      <tr><td>__eq__</td><td>obj1 == obj2</td></tr>
+      <tr><td>__lt__, __gt__</td><td>obj1 < obj2, obj1 > obj2</td></tr>
+      <tr><td>__add__, __sub__</td><td>obj + x, obj - x</td></tr>
+      <tr><td>__len__</td><td>len(obj)</td></tr>
+      <tr><td>__getitem__</td><td>obj[key]</td></tr>
+      <tr><td>__iter__, __next__</td><td>for x in obj</td></tr>
+      <tr><td>__del__</td><td>Object garbage collected</td></tr>
+    </table>
+  </section>
+
+  <!-- 4. ENCAPSULATION -->
+  <section class="section" id="encapsulation">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">Encapsulation</div>
+        <div class="section-subtitle">Bundle data, control access</div>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Definition</div>
+      <strong>Encapsulation</strong> is the bundling of data and the methods that operate on that data into a single unit (the class), while <em>restricting direct access</em> to some of the object's components. This prevents accidental modification and protects the object's internal state.
+    </div>
+
+    <h3>Access Modifiers</h3>
+    <table>
+      <tr><th>Python Convention</th><th>Meaning</th><th>Java Equivalent</th></tr>
+      <tr><td>name (no prefix)</td><td>Public — accessible anywhere</td><td>public</td></tr>
+      <tr><td>_name (single underscore)</td><td>Protected — convention: don't touch from outside</td><td>protected</td></tr>
+      <tr><td>__name (double underscore)</td><td>Private — name-mangled, hard to access outside</td><td>private</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Encapsulation in Action</div></div>
+      <pre><span class="k">class</span> <span class="cn">BankAccount</span>:
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">owner</span>, <span class="n">balance</span>):
+        <span class="n">self</span>.<span class="n">owner</span> = <span class="n">owner</span>          <span class="c"># public</span>
+        <span class="n">self</span>.<span class="n">_bank_code</span> = <span class="s">"XYZ"</span>   <span class="c"># protected (convention)</span>
+        <span class="n">self</span>.<span class="n">__balance</span> = <span class="n">balance</span>   <span class="c"># private (name-mangled)</span>
+
+    <span class="c"># GETTER — controlled read access</span>
+    <span class="k">def</span> <span class="fn">get_balance</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="n">self</span>.<span class="n">__balance</span>
+
+    <span class="c"># SETTER — controlled write access with validation</span>
+    <span class="k">def</span> <span class="fn">deposit</span>(<span class="n">self</span>, <span class="n">amount</span>):
+        <span class="k">if</span> <span class="n">amount</span> &lt;= <span class="num">0</span>:
+            <span class="k">raise</span> <span class="cn">ValueError</span>(<span class="s">"Deposit must be positive!"</span>)
+        <span class="n">self</span>.<span class="n">__balance</span> += <span class="n">amount</span>
+
+    <span class="k">def</span> <span class="fn">withdraw</span>(<span class="n">self</span>, <span class="n">amount</span>):
+        <span class="k">if</span> <span class="n">amount</span> &gt; <span class="n">self</span>.<span class="n">__balance</span>:
+            <span class="k">raise</span> <span class="cn">ValueError</span>(<span class="s">"Insufficient funds!"</span>)
+        <span class="n">self</span>.<span class="n">__balance</span> -= <span class="n">amount</span>
+
+<span class="n">acc</span> = <span class="cn">BankAccount</span>(<span class="s">"Alice"</span>, <span class="num">1000</span>)
+<span class="fn">print</span>(<span class="n">acc</span>.<span class="fn">get_balance</span>())   <span class="c"># 1000 ✅</span>
+<span class="c"># acc.__balance = 999999  # Won't work as expected!</span>
+<span class="c"># acc.__balance still returns AttributeError</span>
+
+<span class="c"># Python's name mangling: actual name is _BankAccount__balance</span>
+<span class="fn">print</span>(<span class="n">acc</span>.<span class="n">_BankAccount__balance</span>)  <span class="c"># 1000 (accessible but discouraged)</span></pre>
+    </div>
+
+    <h3>Python Properties — Elegant Getters/Setters</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — @property</div></div>
+      <pre><span class="k">class</span> <span class="cn">Temperature</span>:
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">celsius</span>):
+        <span class="n">self</span>.<span class="n">celsius</span> = <span class="n">celsius</span>   <span class="c"># calls the setter below!</span>
+
+    <span class="n">@property</span>
+    <span class="k">def</span> <span class="fn">celsius</span>(<span class="n">self</span>):           <span class="c"># GETTER</span>
+        <span class="k">return</span> <span class="n">self</span>.<span class="n">__celsius</span>
+
+    <span class="n">@celsius.setter</span>
+    <span class="k">def</span> <span class="fn">celsius</span>(<span class="n">self</span>, <span class="n">value</span>):   <span class="c"># SETTER with validation</span>
+        <span class="k">if</span> <span class="n">value</span> &lt; <span class="num">-273.15</span>:
+            <span class="k">raise</span> <span class="cn">ValueError</span>(<span class="s">"Below absolute zero!"</span>)
+        <span class="n">self</span>.<span class="n">__celsius</span> = <span class="n">value</span>
+
+    <span class="n">@property</span>
+    <span class="k">def</span> <span class="fn">fahrenheit</span>(<span class="n">self</span>):       <span class="c"># COMPUTED property — no setter needed</span>
+        <span class="k">return</span> <span class="n">self</span>.<span class="n">__celsius</span> * <span class="num">9</span>/<span class="num">5</span> + <span class="num">32</span>
+
+<span class="n">t</span> = <span class="cn">Temperature</span>(<span class="num">100</span>)
+<span class="fn">print</span>(<span class="n">t</span>.<span class="n">celsius</span>)      <span class="c"># 100   (looks like attribute, runs getter)</span>
+<span class="fn">print</span>(<span class="n">t</span>.<span class="n">fahrenheit</span>)   <span class="c"># 212.0 (computed on the fly!)</span>
+<span class="n">t</span>.<span class="n">celsius</span> = <span class="num">0</span>          <span class="c"># runs setter — validates</span>
+<span class="c"># t.celsius = -999     # ❌ ValueError: Below absolute zero!</span></pre>
+    </div>
+  </section>
+
+  <!-- 5. INHERITANCE -->
+  <section class="section" id="inheritance">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <div class="section-title">Inheritance</div>
+        <div class="section-subtitle">Build on what exists</div>
+      </div>
+    </div>
+
+    <div class="def-box orange">
+      <div class="def-label">Definition</div>
+      <strong>Inheritance</strong> allows a class (child/subclass) to inherit attributes and methods from another class (parent/superclass), enabling code reuse and hierarchical relationships.
+    </div>
+
+    <div class="diagram">
+<span class="box">        Animal          </span>    <span class="label">← Parent / Base class</span>
+<span class="box">       /      \         </span>
+<span class="box">     Dog       Cat      </span>    <span class="label">← Child / Derived classes</span>
+<span class="box">    /   \               </span>
+<span class="box">Bulldog  Poodle         </span>    <span class="label">← Grandchild classes</span></div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Inheritance</div></div>
+      <pre><span class="c"># ── PARENT CLASS ──</span>
+<span class="k">class</span> <span class="cn">Animal</span>:
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">name</span>, <span class="n">age</span>):
+        <span class="n">self</span>.<span class="n">name</span> = <span class="n">name</span>
+        <span class="n">self</span>.<span class="n">age</span> = <span class="n">age</span>
+
+    <span class="k">def</span> <span class="fn">breathe</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.name} breathes"</span>
+
+    <span class="k">def</span> <span class="fn">speak</span>(<span class="n">self</span>):         <span class="c"># will be overridden</span>
+        <span class="k">return</span> <span class="s">"..."</span>
+
+    <span class="k">def</span> <span class="fn">__str__</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.__class__.__name__}({self.name})"</span>
+
+<span class="c"># ── CHILD CLASS ──</span>
+<span class="k">class</span> <span class="cn">Dog</span>(<span class="cn">Animal</span>):         <span class="c"># inherits from Animal</span>
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">name</span>, <span class="n">age</span>, <span class="n">breed</span>):
+        <span class="k">super</span>().<span class="fn">__init__</span>(<span class="n">name</span>, <span class="n">age</span>)  <span class="c"># call parent constructor!</span>
+        <span class="n">self</span>.<span class="n">breed</span> = <span class="n">breed</span>             <span class="c"># new attribute</span>
+
+    <span class="k">def</span> <span class="fn">speak</span>(<span class="n">self</span>):           <span class="c"># METHOD OVERRIDE</span>
+        <span class="k">return</span> <span class="s">f"{self.name} says Woof!"</span>
+
+    <span class="k">def</span> <span class="fn">fetch</span>(<span class="n">self</span>):           <span class="c"># NEW method only in Dog</span>
+        <span class="k">return</span> <span class="s">f"{self.name} fetches the ball!"</span>
+
+<span class="k">class</span> <span class="cn">Cat</span>(<span class="cn">Animal</span>):
+    <span class="k">def</span> <span class="fn">speak</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.name} says Meow!"</span>
+
+<span class="c"># ── Using inheritance ──</span>
+<span class="n">rex</span> = <span class="cn">Dog</span>(<span class="s">"Rex"</span>, <span class="num">3</span>, <span class="s">"Husky"</span>)
+<span class="fn">print</span>(<span class="n">rex</span>.<span class="fn">breathe</span>())  <span class="c"># inherited from Animal → "Rex breathes"</span>
+<span class="fn">print</span>(<span class="n">rex</span>.<span class="fn">speak</span>())    <span class="c"># overridden → "Rex says Woof!"</span>
+<span class="fn">print</span>(<span class="n">rex</span>.<span class="fn">fetch</span>())    <span class="c"># Dog-specific → "Rex fetches the ball!"</span>
+
+<span class="c"># Check inheritance</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(<span class="n">rex</span>, <span class="cn">Dog</span>))     <span class="c"># True</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(<span class="n">rex</span>, <span class="cn">Animal</span>))  <span class="c"># True! Dog IS-A Animal</span>
+<span class="fn">print</span>(<span class="fn">issubclass</span>(<span class="cn">Dog</span>, <span class="cn">Animal</span>))  <span class="c"># True</span></pre>
+    </div>
+
+    <h3>Multiple Inheritance (Python)</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Multiple Inheritance + MRO</div></div>
+      <pre><span class="k">class</span> <span class="cn">Flyable</span>:
+    <span class="k">def</span> <span class="fn">fly</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.name} is flying!"</span>
+
+<span class="k">class</span> <span class="cn">Swimmable</span>:
+    <span class="k">def</span> <span class="fn">swim</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.name} is swimming!"</span>
+
+<span class="k">class</span> <span class="cn">Duck</span>(<span class="cn">Animal</span>, <span class="cn">Flyable</span>, <span class="cn">Swimmable</span>):  <span class="c"># multiple inheritance!</span>
+    <span class="k">def</span> <span class="fn">speak</span>(<span class="n">self</span>):
+        <span class="k">return</span> <span class="s">f"{self.name} says Quack!"</span>
+
+<span class="n">donald</span> = <span class="cn">Duck</span>(<span class="s">"Donald"</span>, <span class="num">2</span>)
+<span class="fn">print</span>(<span class="n">donald</span>.<span class="fn">fly</span>())    <span class="c"># Donald is flying!</span>
+<span class="fn">print</span>(<span class="n">donald</span>.<span class="fn">swim</span>())   <span class="c"># Donald is swimming!</span>
+
+<span class="c"># Method Resolution Order (MRO) — Python's search order</span>
+<span class="fn">print</span>(<span class="cn">Duck</span>.<span class="fn">__mro__</span>)  <span class="c"># (Duck, Animal, Flyable, Swimmable, object)</span></pre>
+    </div>
+
+    <div class="def-box red">
+      <div class="def-label">⚠️ Diamond Problem</div>
+      When two parent classes both inherit from the same grandparent, there's ambiguity about which version of a method to use. Python solves this with <strong>C3 linearization (MRO)</strong>. Java avoids it by only allowing single class inheritance.
+    </div>
+  </section>
+
+  <!-- 6. POLYMORPHISM -->
+  <section class="section" id="polymorphism">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <div class="section-title">Polymorphism</div>
+        <div class="section-subtitle">"Many forms" — same interface, different behavior</div>
+      </div>
+    </div>
+
+    <div class="def-box green">
+      <div class="def-label">Definition</div>
+      <strong>Polymorphism</strong> (Greek: "many shapes") means that objects of different classes can be treated as objects of a common parent class. The same method call produces different results depending on the actual object type.
+    </div>
+
+    <h3>Types of Polymorphism</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Python Support</th></tr>
+      <tr><td>Runtime (subtype)</td><td>Method overriding via inheritance</td><td>✅ Native</td></tr>
+      <tr><td>Duck Typing</td><td>"If it quacks like a duck..." — no explicit type check</td><td>✅ Native</td></tr>
+      <tr><td>Operator Overloading</td><td>Same operator, different behavior per type</td><td>✅ via __dunder__</td></tr>
+      <tr><td>Method Overloading</td><td>Same name, different parameter signatures</td><td>❌ Not native (use *args)</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Polymorphism</div></div>
+      <pre><span class="c"># ── Runtime Polymorphism ──</span>
+<span class="k">class</span> <span class="cn">Shape</span>:
+    <span class="k">def</span> <span class="fn">area</span>(<span class="n">self</span>): <span class="k">return</span> <span class="num">0</span>
+    <span class="k">def</span> <span class="fn">__str__</span>(<span class="n">self</span>): <span class="k">return</span> <span class="s">f"{self.__class__.__name__}(area={self.area()})"</span>
+
+<span class="k">class</span> <span class="cn">Circle</span>(<span class="cn">Shape</span>):
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">r</span>): <span class="n">self</span>.<span class="n">r</span> = <span class="n">r</span>
+    <span class="k">def</span> <span class="fn">area</span>(<span class="n">self</span>): <span class="k">return</span> <span class="num">3.14159</span> * <span class="n">self</span>.<span class="n">r</span> ** <span class="num">2</span>
+
+<span class="k">class</span> <span class="cn">Rectangle</span>(<span class="cn">Shape</span>):
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">w</span>, <span class="n">h</span>): <span class="n">self</span>.<span class="n">w</span> = <span class="n">w</span>; <span class="n">self</span>.<span class="n">h</span> = <span class="n">h</span>
+    <span class="k">def</span> <span class="fn">area</span>(<span class="n">self</span>): <span class="k">return</span> <span class="n">self</span>.<span class="n">w</span> * <span class="n">self</span>.<span class="n">h</span>
+
+<span class="k">class</span> <span class="cn">Triangle</span>(<span class="cn">Shape</span>):
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">b</span>, <span class="n">h</span>): <span class="n">self</span>.<span class="n">b</span> = <span class="n">b</span>; <span class="n">self</span>.<span class="n">h</span> = <span class="n">h</span>
+    <span class="k">def</span> <span class="fn">area</span>(<span class="n">self</span>): <span class="k">return</span> <span class="num">0.5</span> * <span class="n">self</span>.<span class="n">b</span> * <span class="n">self</span>.<span class="n">h</span>
+
+<span class="c"># 🎭 POLYMORPHISM: treat all shapes uniformly!</span>
+<span class="n">shapes</span> = [<span class="cn">Circle</span>(<span class="num">5</span>), <span class="cn">Rectangle</span>(<span class="num">4</span>, <span class="num">6</span>), <span class="cn">Triangle</span>(<span class="num">3</span>, <span class="num">8</span>)]
+
+<span class="k">for</span> <span class="n">shape</span> <span class="k">in</span> <span class="n">shapes</span>:
+    <span class="fn">print</span>(<span class="n">shape</span>.<span class="fn">area</span>())  <span class="c"># Each calls ITS OWN area()</span>
+    <span class="c"># 78.53975  /  24  /  12.0</span>
+
+<span class="c"># ── Duck Typing ──</span>
+<span class="k">class</span> <span class="cn">PDFDocument</span>:
+    <span class="k">def</span> <span class="fn">render</span>(<span class="n">self</span>): <span class="k">return</span> <span class="s">"Rendering PDF..."</span>
+
+<span class="k">class</span> <span class="cn">HTMLDocument</span>:
+    <span class="k">def</span> <span class="fn">render</span>(<span class="n">self</span>): <span class="k">return</span> <span class="s">"Rendering HTML..."</span>
+
+<span class="k">def</span> <span class="fn">display</span>(<span class="n">doc</span>):    <span class="c"># doesn't care about type — just needs render()</span>
+    <span class="fn">print</span>(<span class="n">doc</span>.<span class="fn">render</span>())
+
+<span class="fn">display</span>(<span class="cn">PDFDocument</span>())   <span class="c"># Rendering PDF...</span>
+<span class="fn">display</span>(<span class="cn">HTMLDocument</span>())  <span class="c"># Rendering HTML...</span></pre>
+    </div>
+  </section>
+
+  <!-- 7. ABSTRACTION -->
+  <section class="section" id="abstraction">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <div class="section-title">Abstraction</div>
+        <div class="section-subtitle">Expose the essential, hide the complexity</div>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Definition</div>
+      <strong>Abstraction</strong> means showing only the relevant details to the user and hiding implementation complexity. You use a TV remote without knowing how it sends infrared signals — that complexity is abstracted away.
+    </div>
+
+    <div class="compare">
+      <div class="compare-box good">
+        <div class="compare-label">✅ What Users See</div>
+        <p style="font-size:13px; color:var(--muted)">drive_car() — simple interface<br>send_email("hello") — clean API<br>list.sort() — just works</p>
+      </div>
+      <div class="compare-box bad">
+        <div class="compare-label">🔧 Hidden Complexity</div>
+        <p style="font-size:13px; color:var(--muted)">Engine cylinders, fuel injection,<br>SMTP protocol, DNS lookup,<br>quicksort algorithm internals</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Abstract Base Classes (ABC)</div></div>
+      <pre><span class="k">from</span> <span class="n">abc</span> <span class="k">import</span> <span class="cn">ABC</span>, <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="cn">PaymentProcessor</span>(<span class="cn">ABC</span>):  <span class="c"># Abstract class — can't be instantiated!</span>
+
+    <span class="n">@abstractmethod</span>
+    <span class="k">def</span> <span class="fn">process_payment</span>(<span class="n">self</span>, <span class="n">amount</span>):
+        <span class="k">pass</span>   <span class="c"># No implementation — subclasses MUST implement this</span>
+
+    <span class="n">@abstractmethod</span>
+    <span class="k">def</span> <span class="fn">refund</span>(<span class="n">self</span>, <span class="n">transaction_id</span>):
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fn">get_fee</span>(<span class="n">self</span>):           <span class="c"># Concrete method — has implementation</span>
+        <span class="k">return</span> <span class="num">0.029</span>             <span class="c"># 2.9% fee</span>
+
+<span class="c"># Concrete implementations</span>
+<span class="k">class</span> <span class="cn">StripeProcessor</span>(<span class="cn">PaymentProcessor</span>):
+    <span class="k">def</span> <span class="fn">process_payment</span>(<span class="n">self</span>, <span class="n">amount</span>):
+        <span class="k">return</span> <span class="s">f"Stripe: charging ${amount} via card network..."</span>
+    <span class="k">def</span> <span class="fn">refund</span>(<span class="n">self</span>, <span class="n">tid</span>):
+        <span class="k">return</span> <span class="s">f"Stripe: refunding transaction {tid}"</span>
+
+<span class="k">class</span> <span class="cn">PayPalProcessor</span>(<span class="cn">PaymentProcessor</span>):
+    <span class="k">def</span> <span class="fn">process_payment</span>(<span class="n">self</span>, <span class="n">amount</span>):
+        <span class="k">return</span> <span class="s">f"PayPal: transferring ${amount} via PayPal balance..."</span>
+    <span class="k">def</span> <span class="fn">refund</span>(<span class="n">self</span>, <span class="n">tid</span>):
+        <span class="k">return</span> <span class="s">f"PayPal: issuing refund for {tid}"</span>
+
+<span class="c"># PaymentProcessor()  # ❌ TypeError: Can't instantiate abstract class</span>
+<span class="n">p</span> = <span class="cn">StripeProcessor</span>()
+<span class="fn">print</span>(<span class="n">p</span>.<span class="fn">process_payment</span>(<span class="num">100</span>))  <span class="c"># works!</span></pre>
+    </div>
+  </section>
+
+  <!-- 8. INTERFACES -->
+  <section class="section" id="interfaces">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div>
+        <div class="section-title">Interfaces & Protocols</div>
+        <div class="section-subtitle">Contracts without implementation</div>
+      </div>
+    </div>
+
+    <p>An <strong>interface</strong> is a pure contract — it declares what methods a class must have, without providing any implementation. Java has explicit <code>interface</code> keyword; Python uses ABCs or Protocols (typing).</p>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Protocol (Structural Subtyping)</div></div>
+      <pre><span class="k">from</span> <span class="n">typing</span> <span class="k">import</span> <span class="cn">Protocol</span>
+
+<span class="c"># Protocol = interface in Python typing</span>
+<span class="k">class</span> <span class="cn">Drawable</span>(<span class="cn">Protocol</span>):
+    <span class="k">def</span> <span class="fn">draw</span>(<span class="n">self</span>) -&gt; <span class="n">str</span>: ...
+    <span class="k">def</span> <span class="fn">resize</span>(<span class="n">self</span>, <span class="n">factor</span>: <span class="n">float</span>) -&gt; <span class="k">None</span>: ...
+
+<span class="k">class</span> <span class="cn">Circle</span>:
+    <span class="k">def</span> <span class="fn">draw</span>(<span class="n">self</span>) -&gt; <span class="n">str</span>: <span class="k">return</span> <span class="s">"○"</span>
+    <span class="k">def</span> <span class="fn">resize</span>(<span class="n">self</span>, <span class="n">f</span>): <span class="n">self</span>.<span class="n">radius</span> *= <span class="n">f</span>
+
+<span class="c"># Circle satisfies Drawable without explicitly inheriting it!</span>
+<span class="k">def</span> <span class="fn">render</span>(<span class="n">item</span>: <span class="cn">Drawable</span>):   <span class="c"># type-safe!</span>
+    <span class="fn">print</span>(<span class="n">item</span>.<span class="fn">draw</span>())</pre>
+    </div>
+
+    <h3>Abstract Class vs Interface</h3>
+    <table>
+      <tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr>
+      <tr><td>Has implementation</td><td>Yes (some methods)</td><td>No (pure contract)</td></tr>
+      <tr><td>Has state/attributes</td><td>Yes</td><td>No (usually)</td></tr>
+      <tr><td>Inheritance</td><td>Single (Java)</td><td>Multiple allowed</td></tr>
+      <tr><td>Purpose</td><td>"IS-A" relationship</td><td>"CAN-DO" relationship</td></tr>
+      <tr><td>Python keyword</td><td>ABC</td><td>Protocol / ABC (all abstract)</td></tr>
+    </table>
+  </section>
+
+  <!-- 9. COMPOSITION -->
+  <section class="section" id="composition">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div>
+        <div class="section-title">Composition vs Inheritance</div>
+        <div class="section-subtitle">"Favor composition over inheritance" — GoF</div>
+      </div>
+    </div>
+
+    <div class="def-box orange">
+      <div class="def-label">Key Insight</div>
+      <strong>Inheritance</strong> = "IS-A" (Dog IS-A Animal) → Use when a true parent-child relationship exists.<br>
+      <strong>Composition</strong> = "HAS-A" (Car HAS-A Engine) → Use when you want to reuse behavior without being the thing.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Composition</div></div>
+      <pre><span class="c"># ── BAD: Inheritance misuse ──</span>
+<span class="k">class</span> <span class="cn">Logger</span>:
+    <span class="k">def</span> <span class="fn">log</span>(<span class="n">self</span>, <span class="n">msg</span>): <span class="fn">print</span>(<span class="s">f"[LOG] {msg}"</span>)
+
+<span class="k">class</span> <span class="cn">UserService</span>(<span class="cn">Logger</span>):  <span class="c"># ❌ UserService IS-A Logger? No!</span>
+    <span class="k">def</span> <span class="fn">create_user</span>(<span class="n">self</span>, <span class="n">name</span>):
+        <span class="n">self</span>.<span class="fn">log</span>(<span class="s">f"Creating {name}"</span>)
+
+<span class="c"># ── GOOD: Composition ──</span>
+<span class="k">class</span> <span class="cn">Logger</span>:
+    <span class="k">def</span> <span class="fn">log</span>(<span class="n">self</span>, <span class="n">msg</span>): <span class="fn">print</span>(<span class="s">f"[LOG] {msg}"</span>)
+
+<span class="k">class</span> <span class="cn">UserService</span>:           <span class="c"># ✅ UserService HAS-A Logger</span>
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>):
+        <span class="n">self</span>.<span class="n">logger</span> = <span class="cn">Logger</span>()  <span class="c"># composed inside</span>
+
+    <span class="k">def</span> <span class="fn">create_user</span>(<span class="n">self</span>, <span class="n">name</span>):
+        <span class="n">self</span>.<span class="n">logger</span>.<span class="fn">log</span>(<span class="s">f"Creating {name}"</span>)
+
+<span class="c"># ── Real World: Car example ──</span>
+<span class="k">class</span> <span class="cn">Engine</span>:
+    <span class="k">def</span> <span class="fn">start</span>(<span class="n">self</span>): <span class="k">return</span> <span class="s">"Vroom!"</span>
+    <span class="k">def</span> <span class="fn">stop</span>(<span class="n">self</span>): <span class="k">return</span> <span class="s">"Shhhh..."</span>
+
+<span class="k">class</span> <span class="cn">GPS</span>:
+    <span class="k">def</span> <span class="fn">navigate</span>(<span class="n">self</span>, <span class="n">dest</span>): <span class="k">return</span> <span class="s">f"Navigating to {dest}"</span>
+
+<span class="k">class</span> <span class="cn">Car</span>:                     <span class="c"># Car HAS-A Engine, HAS-A GPS</span>
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">model</span>):
+        <span class="n">self</span>.<span class="n">model</span> = <span class="n">model</span>
+        <span class="n">self</span>.<span class="n">engine</span> = <span class="cn">Engine</span>()
+        <span class="n">self</span>.<span class="n">gps</span> = <span class="cn">GPS</span>()
+
+    <span class="k">def</span> <span class="fn">drive_to</span>(<span class="n">self</span>, <span class="n">dest</span>):
+        <span class="n">self</span>.<span class="n">engine</span>.<span class="fn">start</span>()
+        <span class="k">return</span> <span class="n">self</span>.<span class="n">gps</span>.<span class="fn">navigate</span>(<span class="n">dest</span>)
+
+<span class="n">my_car</span> = <span class="cn">Car</span>(<span class="s">"Tesla"</span>)
+<span class="fn">print</span>(<span class="n">my_car</span>.<span class="fn">drive_to</span>(<span class="s">"Paris"</span>))  <span class="c"># Navigating to Paris</span></pre>
+    </div>
+  </section>
+
+  <!-- 10. SOLID -->
+  <section class="section" id="solid">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">SOLID Principles</div>
+        <div class="section-subtitle">The 5 laws of good OOP design</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">S — Single Responsibility Principle</div>
+      <p><strong>A class should have only ONE reason to change.</strong> Don't bundle unrelated logic into one class.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python</div></div>
+        <pre><span class="c"># ❌ BAD — Order does everything</span>
+<span class="k">class</span> <span class="cn">Order</span>:
+    <span class="k">def</span> <span class="fn">calculate_total</span>(<span class="n">self</span>): ...
+    <span class="k">def</span> <span class="fn">save_to_db</span>(<span class="n">self</span>): ...      <span class="c"># DB logic here!?</span>
+    <span class="k">def</span> <span class="fn">send_email</span>(<span class="n">self</span>): ...       <span class="c"># Email logic too!?</span>
+
+<span class="c"># ✅ GOOD — Each class has one job</span>
+<span class="k">class</span> <span class="cn">Order</span>:
+    <span class="k">def</span> <span class="fn">calculate_total</span>(<span class="n">self</span>): ...
+
+<span class="k">class</span> <span class="cn">OrderRepository</span>:
+    <span class="k">def</span> <span class="fn">save</span>(<span class="n">self</span>, <span class="n">order</span>): ...
+
+<span class="k">class</span> <span class="cn">OrderNotifier</span>:
+    <span class="k">def</span> <span class="fn">send_confirmation</span>(<span class="n">self</span>, <span class="n">order</span>): ...</pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">O — Open/Closed Principle</div>
+      <p><strong>Open for extension, closed for modification.</strong> Add new behavior by adding new code, not changing existing code.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python</div></div>
+        <pre><span class="c"># ❌ BAD — must modify this every time a new shape is added</span>
+<span class="k">def</span> <span class="fn">total_area</span>(<span class="n">shapes</span>):
+    <span class="n">total</span> = <span class="num">0</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="k">in</span> <span class="n">shapes</span>:
+        <span class="k">if</span> <span class="fn">isinstance</span>(<span class="n">s</span>, <span class="cn">Circle</span>): <span class="n">total</span> += <span class="n">s</span>.<span class="n">r</span>**<span class="num">2</span> * <span class="num">3.14</span>
+        <span class="k">elif</span> <span class="fn">isinstance</span>(<span class="n">s</span>, <span class="cn">Rect</span>): <span class="n">total</span> += <span class="n">s</span>.<span class="n">w</span> * <span class="n">s</span>.<span class="n">h</span>
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="c"># ✅ GOOD — just add a new Shape subclass to extend</span>
+<span class="k">def</span> <span class="fn">total_area</span>(<span class="n">shapes</span>):
+    <span class="k">return</span> <span class="fn">sum</span>(<span class="n">s</span>.<span class="fn">area</span>() <span class="k">for</span> <span class="n">s</span> <span class="k">in</span> <span class="n">shapes</span>)  <span class="c"># closed for modification!</span></pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">L — Liskov Substitution Principle</div>
+      <p><strong>Objects of a subclass must be replaceable for objects of the superclass</strong> without breaking the program. A child class should honor the parent's contract.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python</div></div>
+        <pre><span class="c"># ❌ BAD — Square breaks Rectangle's contract (w and h must be independent)</span>
+<span class="k">class</span> <span class="cn">Rectangle</span>:
+    <span class="k">def</span> <span class="fn">set_width</span>(<span class="n">self</span>, <span class="n">w</span>): <span class="n">self</span>.<span class="n">w</span> = <span class="n">w</span>
+    <span class="k">def</span> <span class="fn">set_height</span>(<span class="n">self</span>, <span class="n">h</span>): <span class="n">self</span>.<span class="n">h</span> = <span class="n">h</span>
+
+<span class="k">class</span> <span class="cn">Square</span>(<span class="cn">Rectangle</span>):   <span class="c"># ❌ violates LSP!</span>
+    <span class="k">def</span> <span class="fn">set_width</span>(<span class="n">self</span>, <span class="n">w</span>): <span class="n">self</span>.<span class="n">w</span> = <span class="n">self</span>.<span class="n">h</span> = <span class="n">w</span>  <span class="c"># changes both!</span>
+
+<span class="c"># ✅ GOOD — Keep them as separate classes; both extend Shape</span></pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">I — Interface Segregation Principle</div>
+      <p><strong>Clients shouldn't be forced to implement interfaces they don't use.</strong> Many small interfaces beat one fat interface.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">D — Dependency Inversion Principle</div>
+      <p><strong>High-level modules should not depend on low-level modules. Both should depend on abstractions.</strong></p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python</div></div>
+        <pre><span class="c"># ❌ BAD — high-level depends on low-level directly</span>
+<span class="k">class</span> <span class="cn">Notification</span>:
+    <span class="k">def</span> <span class="fn">send</span>(<span class="n">self</span>, <span class="n">msg</span>):
+        <span class="cn">EmailService</span>().<span class="fn">send_email</span>(<span class="n">msg</span>)  <span class="c"># tightly coupled!</span>
+
+<span class="c"># ✅ GOOD — depend on abstraction</span>
+<span class="k">class</span> <span class="cn">MessageSender</span>(<span class="cn">ABC</span>):
+    <span class="n">@abstractmethod</span>
+    <span class="k">def</span> <span class="fn">send</span>(<span class="n">self</span>, <span class="n">msg</span>): ...
+
+<span class="k">class</span> <span class="cn">Notification</span>:
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">sender</span>: <span class="cn">MessageSender</span>):
+        <span class="n">self</span>.<span class="n">sender</span> = <span class="n">sender</span>    <span class="c"># injected dependency!</span>
+    <span class="k">def</span> <span class="fn">send</span>(<span class="n">self</span>, <span class="n">msg</span>):
+        <span class="n">self</span>.<span class="n">sender</span>.<span class="fn">send</span>(<span class="n">msg</span>)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. DESIGN PATTERNS -->
+  <section class="section" id="design-patterns">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div>
+        <div class="section-title">Design Patterns</div>
+        <div class="section-subtitle">Reusable solutions to common problems</div>
+      </div>
+    </div>
+
+    <p>Design patterns are proven solutions to recurring design problems. The "Gang of Four" (GoF) book identified 23 patterns in 3 categories:</p>
+
+    <table>
+      <tr><th>Category</th><th>Concern</th><th>Key Patterns</th></tr>
+      <tr><td>Creational</td><td>How objects are created</td><td>Singleton, Factory, Builder, Prototype</td></tr>
+      <tr><td>Structural</td><td>How objects are composed</td><td>Adapter, Decorator, Facade, Proxy</td></tr>
+      <tr><td>Behavioral</td><td>How objects communicate</td><td>Observer, Strategy, Command, Iterator</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Singleton Pattern</div></div>
+      <pre><span class="k">class</span> <span class="cn">DatabaseConnection</span>:
+    <span class="n">_instance</span> = <span class="k">None</span>
+
+    <span class="k">def</span> <span class="fn">__new__</span>(<span class="n">cls</span>):
+        <span class="k">if</span> <span class="n">cls</span>.<span class="n">_instance</span> <span class="k">is None</span>:
+            <span class="n">cls</span>.<span class="n">_instance</span> = <span class="k">super</span>().<span class="fn">__new__</span>(<span class="n">cls</span>)
+        <span class="k">return</span> <span class="n">cls</span>.<span class="n">_instance
+
+<span class="n">db1</span> = <span class="cn">DatabaseConnection</span>()
+<span class="n">db2</span> = <span class="cn">DatabaseConnection</span>()
+<span class="fn">print</span>(<span class="n">db1</span> <span class="k">is</span> <span class="n">db2</span>)  <span class="c"># True — same instance!</span></pre>
+      </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Observer Pattern</div></div>
+      <pre><span class="k">class</span> <span class="cn">EventSystem</span>:  <span class="c"># Subject / Publisher</span>
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>):
+        <span class="n">self</span>.<span class="n">_listeners</span> = {}
+
+    <span class="k">def</span> <span class="fn">subscribe</span>(<span class="n">self</span>, <span class="n">event</span>, <span class="n">callback</span>):
+        <span class="n">self</span>.<span class="n">_listeners</span>.<span class="fn">setdefault</span>(<span class="n">event</span>, []).<span class="fn">append</span>(<span class="n">callback</span>)
+
+    <span class="k">def</span> <span class="fn">emit</span>(<span class="n">self</span>, <span class="n">event</span>, <span class="n">data</span>=<span class="k">None</span>):
+        <span class="k">for</span> <span class="n">cb</span> <span class="k">in</span> <span class="n">self</span>.<span class="n">_listeners</span>.<span class="fn">get</span>(<span class="n">event</span>, []):
+            <span class="fn">cb</span>(<span class="n">data</span>)
+
+<span class="n">events</span> = <span class="cn">EventSystem</span>()
+<span class="n">events</span>.<span class="fn">subscribe</span>(<span class="s">"user_login"</span>, <span class="k">lambda</span> <span class="n">u</span>: <span class="fn">print</span>(<span class="s">f"Welcome, {u}!"</span>))
+<span class="n">events</span>.<span class="fn">subscribe</span>(<span class="s">"user_login"</span>, <span class="k">lambda</span> <span class="n">u</span>: <span class="fn">print</span>(<span class="s">f"Audit: {u} logged in"</span>))
+<span class="n">events</span>.<span class="fn">emit</span>(<span class="s">"user_login"</span>, <span class="s">"Alice"</span>)
+<span class="c"># Welcome, Alice!
+# Audit: Alice logged in</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Decorator Pattern</div></div>
+      <pre><span class="k">from</span> <span class="n">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+
+<span class="k">def</span> <span class="fn">log_call</span>(<span class="n">func</span>):   <span class="c"># Decorator adds behavior without changing func</span>
+    <span class="n">@wraps</span>(<span class="n">func</span>)
+    <span class="k">def</span> <span class="fn">wrapper</span>(*<span class="n">args</span>, **<span class="n">kwargs</span>):
+        <span class="fn">print</span>(<span class="s">f"Calling {func.__name__}..."</span>)
+        <span class="n">result</span> = <span class="fn">func</span>(*<span class="n">args</span>, **<span class="n">kwargs</span>)
+        <span class="fn">print</span>(<span class="s">f"Done. Result: {result}"</span>)
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="n">@log_call</span>
+<span class="k">def</span> <span class="fn">add</span>(<span class="n">a</span>, <span class="n">b</span>): <span class="k">return</span> <span class="n">a</span> + <span class="n">b</span>
+
+<span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>)
+<span class="c"># Calling add...
+# Done. Result: 7</span></pre>
+    </div>
+  </section>
+
+  <!-- 12. ADVANCED -->
+  <section class="section" id="advanced-oop">
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <div>
+        <div class="section-title">Advanced OOP Concepts</div>
+        <div class="section-subtitle">Metaclasses, mixins, dataclasses & more</div>
+      </div>
+    </div>
+
+    <h3>Mixins</h3>
+    <p>A <strong>mixin</strong> is a class that provides methods to be used by other classes, without being a "parent" in the traditional sense. They add capabilities via multiple inheritance.</p>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Mixins</div></div>
+      <pre><span class="k">class</span> <span class="cn">JSONMixin</span>:
+    <span class="k">def</span> <span class="fn">to_json</span>(<span class="n">self</span>):
+        <span class="k">import</span> <span class="n">json</span>
+        <span class="k">return</span> <span class="n">json</span>.<span class="fn">dumps</span>(<span class="n">self</span>.<span class="fn">__dict__</span>)
+
+<span class="k">class</span> <span class="cn">TimestampMixin</span>:
+    <span class="k">def</span> <span class="fn">created_at</span>(<span class="n">self</span>):
+        <span class="k">from</span> <span class="n">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+        <span class="k">return</span> <span class="n">datetime</span>.<span class="fn">now</span>().<span class="fn">isoformat</span>()
+
+<span class="k">class</span> <span class="cn">User</span>(<span class="cn">JSONMixin</span>, <span class="cn">TimestampMixin</span>):  <span class="c"># mixed in!</span>
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>, <span class="n">name</span>, <span class="n">email</span>):
+        <span class="n">self</span>.<span class="n">name</span> = <span class="n">name</span>
+        <span class="n">self</span>.<span class="n">email</span> = <span class="n">email</span>
+
+<span class="n">u</span> = <span class="cn">User</span>(<span class="s">"Alice"</span>, <span class="s">"alice@example.com"</span>)
+<span class="fn">print</span>(<span class="n">u</span>.<span class="fn">to_json</span>())      <span class="c"># {"name": "Alice", "email": "alice@example.com"}</span>
+<span class="fn">print</span>(<span class="n">u</span>.<span class="fn">created_at</span>())   <span class="c"># 2025-01-15T10:30:00</span></pre>
+    </div>
+
+    <h3>Dataclasses</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — @dataclass</div></div>
+      <pre><span class="k">from</span> <span class="n">dataclasses</span> <span class="k">import</span> <span class="n">dataclass</span>, <span class="n">field</span>
+
+<span class="n">@dataclass</span>
+<span class="k">class</span> <span class="cn">Product</span>:
+    <span class="n">name</span>: <span class="n">str</span>
+    <span class="n">price</span>: <span class="n">float</span>
+    <span class="n">tags</span>: <span class="n">list</span> = <span class="fn">field</span>(<span class="n">default_factory</span>=<span class="n">list</span>)
+
+    <span class="c"># __init__, __repr__, __eq__ auto-generated!</span>
+
+<span class="n">p</span> = <span class="cn">Product</span>(<span class="s">"Laptop"</span>, <span class="num">999.99</span>, [<span class="s">"electronics"</span>, <span class="s">"tech"</span>])
+<span class="fn">print</span>(<span class="n">p</span>)  <span class="c"># Product(name='Laptop', price=999.99, tags=['electronics', 'tech'])</span></pre>
+    </div>
+
+    <h3>Metaclasses</h3>
+    <p>A <strong>metaclass</strong> is the class of a class — it controls how classes themselves are created. "When Python sees <code>class Dog</code>, it uses a metaclass to build the <code>Dog</code> class."</p>
+
+    <div class="code-block">
+      <div class="code-header"><div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-lang">Python — Metaclass</div></div>
+      <pre><span class="k">class</span> <span class="cn">SingletonMeta</span>(<span class="fn">type</span>):  <span class="c"># inherits from `type` (the metaclass of all classes)</span>
+    <span class="n">_instances</span> = {}
+
+    <span class="k">def</span> <span class="fn">__call__</span>(<span class="n">cls</span>, *<span class="n">args</span>, **<span class="n">kwargs</span>):
+        <span class="k">if</span> <span class="n">cls</span> <span class="k">not in</span> <span class="n">cls</span>.<span class="n">_instances</span>:
+            <span class="n">cls</span>.<span class="n">_instances</span>[<span class="n">cls</span>] = <span class="k">super</span>().<span class="fn">__call__</span>(*<span class="n">args</span>, **<span class="n">kwargs</span>)
+        <span class="k">return</span> <span class="n">cls</span>.<span class="n">_instances</span>[<span class="n">cls</span>]
+
+<span class="k">class</span> <span class="cn">Config</span>(<span class="n">metaclass</span>=<span class="cn">SingletonMeta</span>):
+    <span class="k">def</span> <span class="fn">__init__</span>(<span class="n">self</span>): <span class="n">self</span>.<span class="n">settings</span> = {}
+
+<span class="n">c1</span> = <span class="cn">Config</span>(); <span class="n">c2</span> = <span class="cn">Config</span>()
+<span class="fn">print</span>(<span class="n">c1</span> <span class="k">is</span> <span class="n">c2</span>)  <span class="c"># True</span></pre>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <div class="section-num">★</div>
+      <div>
+        <div class="section-title">Complete OOP Map</div>
+        <div class="section-subtitle">Everything at a glance</div>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Concept</th><th>One-Liner</th><th>Key Syntax</th></tr>
+      <tr><td>Class</td><td>Blueprint for objects</td><td>class Dog:</td></tr>
+      <tr><td>Object</td><td>Instance created from class</td><td>dog = Dog()</td></tr>
+      <tr><td>Attribute</td><td>Data inside an object</td><td>self.name = name</td></tr>
+      <tr><td>Method</td><td>Function inside a class</td><td>def bark(self):</td></tr>
+      <tr><td>Constructor</td><td>Auto-called on creation</td><td>def __init__(self):</td></tr>
+      <tr><td>Encapsulation</td><td>Bundle + protect data</td><td>self.__private</td></tr>
+      <tr><td>Inheritance</td><td>Child extends parent</td><td>class Dog(Animal):</td></tr>
+      <tr><td>Polymorphism</td><td>Same call, different result</td><td>Override method</td></tr>
+      <tr><td>Abstraction</td><td>Hide complexity, show interface</td><td>ABC, @abstractmethod</td></tr>
+      <tr><td>Interface</td><td>Pure contract (no implementation)</td><td>Protocol</td></tr>
+      <tr><td>Composition</td><td>HAS-A relationship</td><td>self.engine = Engine()</td></tr>
+      <tr><td>super()</td><td>Call parent method</td><td>super().__init__()</td></tr>
+      <tr><td>@property</td><td>Elegant getter/setter</td><td>@property def x(self):</td></tr>
+      <tr><td>@classmethod</td><td>Method on the class itself</td><td>@classmethod def f(cls):</td></tr>
+      <tr><td>@staticmethod</td><td>Utility, no self/cls</td><td>@staticmethod def f():</td></tr>
+      <tr><td>Dunder methods</td><td>Operator/built-in integration</td><td>__str__, __eq__, __add__</td></tr>
+      <tr><td>Mixin</td><td>Add capability via multiple inheritance</td><td>class User(JSONMixin)</td></tr>
+      <tr><td>Metaclass</td><td>Class of a class</td><td>class Foo(metaclass=Meta)</td></tr>
+      <tr><td>Dataclass</td><td>Auto-generate boilerplate</td><td>@dataclass</td></tr>
+    </table>
+
+    <div class="def-box green" style="margin-top:32px;">
+      <div class="def-label">🎓 Learning Path Advice</div>
+      Master this order: <strong>1. Classes & Objects → 2. Encapsulation → 3. Inheritance → 4. Polymorphism → 5. Abstraction → 6. SOLID → 7. Design Patterns</strong>. Build something real at each step — a bank, a game, an API. OOP only clicks through practice.
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progress').style.width = progress + '%';
+  });
+
+  // Active nav item
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => item.classList.remove('active'));
+        const id = entry.target.id;
+        const activeItem = document.querySelector(`.nav-item[href="#${id}"]`);
+        if (activeItem) activeItem.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
